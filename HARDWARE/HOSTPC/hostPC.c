@@ -20,7 +20,8 @@
 typedef uint8_t bool;
 #define TRUE 1
 #define FALSE 0
-#define WINDOW_SIZE 16/2
+// #define M_
+#define WINDOW_SIZE 16/2 // 注意其实是窗口大小的两倍
 
 struct WINDOW {
     char data[200];
@@ -71,6 +72,7 @@ static int _seqNo(char * frame) {
         i = (int)((frame[0] - '0')); //十六进制的序号
     } else {
         i = (int)((frame[0] - 'A')); //十六进制的序号
+        i += 10;
     }
     return i;
 }

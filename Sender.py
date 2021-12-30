@@ -78,7 +78,7 @@ def ARQ_send(ser:serial.Serial):
 
         # 有包要发送
         if(abs(S_n - S_f) == S_w//2): # 窗口满
-            console.print(Text('[!] 窗口满，等待空',style='red bold'))
+            console.print(Text('[!] 窗口满，等待空，丢弃输入',style='red bold'))
         else:
             # 发送
             frames[S_n] = frame
@@ -126,7 +126,7 @@ def ARQ_send(ser:serial.Serial):
 
         # 打印状态
         print('S_n:',S_n,'S_f:',S_f)
-        table = Table(show_header=True, header_style='blue', title='发送窗口')
+        table = Table(show_header=True, header_style='blue', title=f'窗口大小:4  S_n:{S_n}  S_f:{S_f}')
         table.add_column('No')
         table.add_column('Frame')
         table.add_column('Time')

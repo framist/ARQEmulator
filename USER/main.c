@@ -56,12 +56,12 @@ int main(void)
 
 	WM_SetCreateFlags(WM_CF_MEMDEV);//为重绘操作自动使用存储设备
 	GUI_Init();
-    GUI_CURSOR_Show();
+    // GUI_CURSOR_Show();
 
 
 // 更换皮肤
 
-#if 0
+#if 1
 #include "DIALOG.h"
     BUTTON_SetDefaultSkin(BUTTON_SKIN_FLEX); 
     CHECKBOX_SetDefaultSkin(CHECKBOX_SKIN_FLEX);

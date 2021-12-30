@@ -12,6 +12,7 @@
 #include "hostPC.h"
 #include "usart.h"
 #include "string.h"
+void showPrintf(const char *fmt, ...);
 //#include <stdio.h>
 
 
@@ -49,9 +50,9 @@ static bool _WaitForEvent(char * frame) {
 
 
 static bool _corrupeted(char * frame) {
-    //先实现一个最简单的：字符串最后一个字节做长度校验（不包括校验和序号）
+    //实现最简单的：字符串最后一个字节做长度校验（不包括校验和序号）
     int len = strlen(frame);
-    if((int)(frame[len-1] - '0' ) != len-2) {
+    if((int)(frame[len-1]) != len-2) {
         return TRUE;
     } else {
         return FALSE;
@@ -109,7 +110,7 @@ int host_ARQ_R(void) {
         if(_corrupeted(frame) ) { // 这边书上的示例逻辑貌似也是错的
             if(! NakSent) _SendNAK(R_n);
             NakSent = TRUE;
-            mainLogPrintf("\n _corrupeted frame!");
+            mainLogPrintf("\n corrupeted frame!");
             return 0;//sleep
         }
         if(_seqNo(frame) != R_n && (! NakSent) ){
@@ -126,6 +127,8 @@ int host_ARQ_R(void) {
         
             while (window[R_n].f) {
                 mainLogPrintf("\n[+] DeliverData:%.*s",strlen(window[R_n].s)-1, window[R_n].s);
+                
+                showPrintf("\n%.*s",strlen(window[R_n].s)-1, window[R_n].s);
                 //purge Rn
                 window[R_n].s = NULL;    
                 window[R_n].f = FALSE;

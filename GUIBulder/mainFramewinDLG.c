@@ -47,9 +47,7 @@
 */
 
 // USER START (Optionally insert additional static data)
-WM_HWIN hWin_oscilloscopeFramewin;
-WM_HWIN hWin_SingalWindow;
-WM_HWIN hWin_AFCFramewin;
+WM_HWIN hWin_ShowWindow;
 WM_HWIN hWin_LogFramewin;
 // USER END
 
@@ -97,6 +95,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     //
     hItem = WM_GetDialogItem(pMsg->hWin, ID_MULTIPAGE_0);
     MULTIPAGE_AddEmptyPage(hItem, 0, " Logs ");
+    MULTIPAGE_AddEmptyPage(hItem, 0, " ShowWindow ");
     // USER START (Optionally insert additional code for further widget initialization)
     hItem = pMsg->hWin;
     WIDGET_SetEffect(hItem,&WIDGET_Effect_None);//Òþ²ØFRAMEWINÐ§¹û
@@ -108,7 +107,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     WM_HWIN CreateLogWindow(void);
     hWin_LogFramewin = CreateLogWindow();
     MULTIPAGE_AttachWindow(hItem,0,hWin_LogFramewin);
+
+    WM_HWIN CreateShowWindow(void);
+    hWin_ShowWindow = CreateShowWindow();
+    MULTIPAGE_AttachWindow(hItem,1,hWin_ShowWindow);
     
+    MULTIPAGE_SetFont(hItem,GUI_FONT_COMIC18B_ASCII);
     MULTIPAGE_SelectPage(hItem,0);
     
     
@@ -134,8 +138,8 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         break;
       case WM_NOTIFICATION_VALUE_CHANGED:
         // USER START (Optionally insert code for reacting on notification message)
-        hItem = WM_GetDialogItem(pMsg->hWin, ID_MULTIPAGE_0);
-        mainLogPrintf("\nMULTIPAGE VALUE CHANGED:%d",MULTIPAGE_GetSelection(hItem) );
+        //hItem = WM_GetDialogItem(pMsg->hWin, ID_MULTIPAGE_0);
+        //mainLogPrintf("\nMULTIPAGE VALUE CHANGED:%d",MULTIPAGE_GetSelection(hItem) );
         // USER END
         break;
       // USER START (Optionally insert additional code for further notification handling)

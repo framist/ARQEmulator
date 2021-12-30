@@ -23,5 +23,6 @@ void mainLogPrintf(const char *fmt, ...)  ;
 
 
 extern WM_HWIN hWin_LogFramewin;
+extern WM_HWIN hWin_ShowWindow;
 
 #endif

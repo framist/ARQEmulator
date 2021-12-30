@@ -1,10 +1,8 @@
-from rich import align
 import serial
 
 # 输出支持
 from rich.console import Console
 from rich.table import Table
-from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
@@ -23,11 +21,9 @@ def show_serial() -> str:
 # 读取串口数据
 def read_serial(ser: serial.Serial) -> str:
     data = b''
-    i = 0
-    print('RAW: ')
     data += ser.readline()
     if data[-2:] == b'\r\n':
-        print(data[:-2])
+        print('接收RAW: ',data)
         return str(data[:-2], encoding='utf-8')
 
 def SendFrame(ser:serial.Serial, frame:bytes):
@@ -36,10 +32,10 @@ def SendFrame(ser:serial.Serial, frame:bytes):
 
 # 成帧
 def MakeFrame(data:str,S_n:int) -> bytes:
-    data += str(len(data))
+    data += chr(len(data))
     data += '\r\n'
     data = str(S_n) + data
-    print('发送：',data)
+    print('发送RAW：',bytes(data, encoding='utf-8'))
     return bytes(data, encoding='utf-8')
 
 
@@ -47,7 +43,7 @@ def corrupted(frame:str) -> bool:
     # 先简单写一下
     if frame is None:
         return True
-    return  len(frame) != 6 or frame[:3] not in ['ACK','NAK'] or frame[5] not in ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']
+    return  len(frame) != 6 or frame[:3] not in ['ACK','NAK'] or frame[5] not in ['0','1','2','3','4','5','6','7','8']
 
 
 def isInWindow(i, S_n, S_f, S_w) -> bool:  # 判断是否在窗口内, Sf < i <= Sn
@@ -61,7 +57,7 @@ def isInWindow(i, S_n, S_f, S_w) -> bool:  # 判断是否在窗口内, Sf < i <=
 # 选择性重传ARQ发送方算法
 def ARQ_send(ser:serial.Serial):
     console = Console()
-    console.print(Panel('   ARQ by Framist   '),justify='center')
+    console.print(Panel(' === Selective Repeat ARQ experiment ===\nby framsit'),justify='center')
     S_w = 2**4//2       # 8 注意这是窗口大小的两倍
     S_f = 0
     S_n = 0
@@ -73,9 +69,13 @@ def ARQ_send(ser:serial.Serial):
         # frame = input('请输入发送(q退出)：')
         frame = console.input(Text('\n请输入发送(q退出)：',style='green bold'))
         if frame == '': 
-            console.print(Text('[!] 输入为空',style='red bold'))
+            console.print('[!] 输入为空',style='red bold')
             continue
-        if frame == 'q':  break
+        if frame == 'q':  
+            console.print(Panel(' === experiment end ==='),justify='center')
+            break
+
+
         # 有包要发送
         if(abs(S_n - S_f) == S_w//2): # 窗口满
             console.print(Text('[!] 窗口满，等待空',style='red bold'))
@@ -92,17 +92,18 @@ def ARQ_send(ser:serial.Serial):
         while True:
             read_frame = read_serial(ser)
             if corrupted(read_frame):
-                print('接收到的数据有误')
+                console.print('[!] 接收到的数据有误或丢失',style='red bold')
             else:
+                print('接收到数据正确:',read_frame)
                 ackNo = int(read_frame[5],16)
                 if read_frame[:3] == 'NAK' and isInWindow(ackNo+1,S_n,S_f,S_w):
-                    print('接收到NAK，重传')
+                    console.print('接收到NAK，重传',style='yellow')
                     SendFrame(ser,MakeFrame(frames[ackNo],ackNo))
                     framesTime[ackNo] = 0
                     continue
 
                 if read_frame[:3] == 'ACK': 
-                    print('接收到ACK:',ackNo)
+                    console.print(f'接收到ACK:{ackNo}',style='blue')
                     if isInWindow(ackNo,S_n,S_f,S_w):
                         while(ackNo != S_f):
                             frames[S_f] = '' # purge
@@ -114,7 +115,7 @@ def ARQ_send(ser:serial.Serial):
             for i in range(S_w):
                 if frames[i] != '':
                     if framesTime[i] > 4:
-                        print(f'超时重传{i}: {frames[i]}')
+                        console.print(f'超时重传 No.{i}: {frames[i]}',style='yellow')
                         SendFrame(ser,MakeFrame(frames[i],i))
                         framesTime[i] = 0
                         break
@@ -132,7 +133,7 @@ def ARQ_send(ser:serial.Serial):
         for i in range(S_w):
             s = 'red' if isInWindow(i+1,S_n,S_f,S_w) else None
             table.add_row(str(i),str(frames[i]),str(framesTime[i]),style=s)
-        console.print(table)
+        console.print(table,justify='center')
 
         
 
@@ -143,17 +144,9 @@ def main():
     baudrate = 9600
     ser = serial.Serial(port, baudrate, timeout=0.5)
     print('串口已打开:',ser.name,ser.baudrate,ser.timeout)
-
-    # # 输入发送队列
-    # toSendqueue = []
-    # print('输入发送队列：#结束输入')
-    # while True:
-    #     frame = input(f'目前总计{len(toSendqueue)} 输入：')
-    #     if frame == '#':  break
-    #     toSendqueue.append(frame)
-
     
     ARQ_send(ser)
+    
     ser.close()
 
 if __name__ == '__main__':

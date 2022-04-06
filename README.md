@@ -19,7 +19,7 @@ fork from:
 >
 > 原理示意图：
 >
-> ![](http://47.96.166.151:3000/uploads/upload_5fbd04339b6b646d956aa9e71c45d6b4.jpg)
+> ![](http://framist.top:3000/uploads/upload_5fbd04339b6b646d956aa9e71c45d6b4.jpg)
 
 
 
@@ -27,16 +27,16 @@ fork from:
 
 ## 实验原理
 
-![](http://47.96.166.151:3000/uploads/upload_9c4be413e580790e22a4e05a7492bb51.png)
+![](http://framist.top:3000/uploads/upload_9c4be413e580790e22a4e05a7492bb51.png)
 
-![](http://47.96.166.151:3000/uploads/upload_773603ff869d9c100093153ae77eba4e.png)
+![](http://framist.top:3000/uploads/upload_773603ff869d9c100093153ae77eba4e.png)
 
 
 Figure 11.21  Selective Repeat ARQ, window size  窗口大小
 
 
 
-![](http://47.96.166.151:3000/uploads/upload_75ec6248fda4e49d7282d9cf55caaf65.png)
+![](http://framist.top:3000/uploads/upload_75ec6248fda4e49d7282d9cf55caaf65.png)
 
 
 
@@ -45,16 +45,16 @@ Figure 11.21  Selective Repeat ARQ, window size  窗口大小
 Algorithm 11.9  Sender-site Selective Repeat algorithm 发送方算法
 
 
-![](http://47.96.166.151:3000/uploads/upload_d74905dd984fb52088c2484614d4815b.png)
-![](http://47.96.166.151:3000/uploads/upload_a30e250a3915f706e1a4370f2436f884.png)
-![](http://47.96.166.151:3000/uploads/upload_c013905d926f08c88051c1b436a7375f.png)
+![](http://framist.top:3000/uploads/upload_d74905dd984fb52088c2484614d4815b.png)
+![](http://framist.top:3000/uploads/upload_a30e250a3915f706e1a4370f2436f884.png)
+![](http://framist.top:3000/uploads/upload_c013905d926f08c88051c1b436a7375f.png)
 
 Algorithm 11.10  Receiver-site Selective Repeat algorithm 接收方算法
 
 
-![](http://47.96.166.151:3000/uploads/upload_1603357bf26f51970589cd48e2d9f62b.png)
+![](http://framist.top:3000/uploads/upload_1603357bf26f51970589cd48e2d9f62b.png)
 
-![](http://47.96.166.151:3000/uploads/upload_352bb434e7f7715b48bf5d786d352fc3.png)
+![](http://framist.top:3000/uploads/upload_352bb434e7f7715b48bf5d786d352fc3.png)
 
 
 
@@ -62,7 +62,7 @@ Algorithm 11.10  Receiver-site Selective Repeat algorithm 接收方算法
 Figure 11.23  Flow diagram for Example 11.8 帧丢失情况和NAK帧的情况
 
 
-![](http://47.96.166.151:3000/uploads/upload_ad077a1cb8d55bd1ad6ed9860c6650d0.png)
+![](http://framist.top:3000/uploads/upload_ad077a1cb8d55bd1ad6ed9860c6650d0.png)
 
 
 
@@ -404,7 +404,7 @@ if(abs(S_n - S_f) == S_w//2): # 窗口满
 
 另外在物理层的串口部分还有额外的流控，不再叙述。
 
-![](http://47.96.166.151:3000/uploads/upload_c17557adbf0aa52bd4fb5e1dd30f7bd2.png)
+![](http://framist.top:3000/uploads/upload_c17557adbf0aa52bd4fb5e1dd30f7bd2.png)
 
 可以看到图中的窗口已经充满，此时由于流量控制的机制，我们并不能继续发送，
 此时的接收窗口已经满了，所以我们再发送的时候帧就会被丢弃，从而实现流量控制的目的
@@ -427,13 +427,13 @@ static bool _corrupeted(char * frame) {
 
 另外在物理层的串口部分还有额外的奇偶校验。
 
-![发送方](http://47.96.166.151:3000/uploads/upload_5c9ff47a9c551626647958928655ec79.png)
+![发送方](http://framist.top:3000/uploads/upload_5c9ff47a9c551626647958928655ec79.png)
 
-![接收方](http://47.96.166.151:3000/uploads/upload_0ddda2d4e002f6a43057aeb899cafd5b.png)
+![接收方](http://framist.top:3000/uploads/upload_0ddda2d4e002f6a43057aeb899cafd5b.png)
 
 超时重传：
 
-![](http://47.96.166.151:3000/uploads/upload_2d43c03c648f66ffa9e98b034c29ec85.png)
+![](http://framist.top:3000/uploads/upload_2d43c03c648f66ffa9e98b034c29ec85.png)
 
 
 ### 实现效果
@@ -441,14 +441,14 @@ static bool _corrupeted(char * frame) {
 
 接收方可触控UI界面：
 
-![](http://47.96.166.151:3000/uploads/upload_a2804c1fc927e960a992e35949224f98.png)
+![](http://framist.top:3000/uploads/upload_a2804c1fc927e960a992e35949224f98.png)
 
-![](http://47.96.166.151:3000/uploads/upload_41fad3bdf3776e73960347c7a2a537cb.png)
+![](http://framist.top:3000/uploads/upload_41fad3bdf3776e73960347c7a2a537cb.png)
 
 
 发送方UI界面：
 
-![](http://47.96.166.151:3000/uploads/upload_b11b1391c77accdc8a7bb22ddbf9fc4a.png)
+![](http://framist.top:3000/uploads/upload_b11b1391c77accdc8a7bb22ddbf9fc4a.png)
 
 
 
